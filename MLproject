@@ -6,21 +6,26 @@
 
 name: root-tissue-segmentation
 
-# conda_env: environment.yml
-docker_env:
-  image: ghcr.io/waseju/root_tissue_segmentation:1.0.0
-  volumes: ["${PWD}/data:/data"]
-  environment: [["MLF_CORE_DOCKER_RUN", "TRUE"],["CUBLAS_WORKSPACE_CONFIG", ":4096:8"]]
+conda_env: environment.yml
+#docker_env:
+#  image: ghcr.io/waseju/root_tissue_segmentation:1.0.0
+#  volumes: ["${PWD}/data:/data"]
+#  environment: [["MLF_CORE_DOCKER_RUN", "TRUE"],["CUBLAS_WORKSPACE_CONFIG", ":4096:8"]]
 
 entry_points:
   main:
     parameters:
-      max_epochs: {type: int, default: 5}
-      gpus: {type: int, default: 0}
-      accelerator: {type str, default: "None"}
-      training-batch-size: {type: int, default: 64}
-      test-batch-size: {type: int, default: 1000}
+      max_epochs: {type: int, default: 100}
+      gpus: {type: int, default: 2}
+      accelerator: {type str, default: "dp"}
+      training-batch-size: {type: int, default: 24}
+      test-batch-size: {type: int, default: 100}
       lr: {type: float, default: 0.01}
+      weight-decay: {type: float, default: 0.00001}
+      gamma-factor: {type: float, default: 2.0}
+      model: {type: str, default: "u2net"}
+      epsilon: {type: float, default: 0.0000000000000001}
+      alpha: {type: float, default: 1}
       general-seed: {type: int, default: 0}
       pytorch-seed: {type: int, default: 0}
       log-interval: {type: int, default: 100}
@@ -32,6 +37,11 @@ entry_points:
             --training-batch-size {training-batch-size} \
             --test-batch-size {test-batch-size} \
             --lr {lr} \
+            --model {model} \
+            --weight-decay {weight-decay} \
+            --gamma-factor {gamma-factor} \
+            --epsilon {epsilon} \
+            --alpha {alpha} \
             --general-seed {general-seed} \
             --pytorch-seed {pytorch-seed} \
             --log-interval {log-interval}
