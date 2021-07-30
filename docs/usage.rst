@@ -41,15 +41,16 @@ You can replace ``all`` with specific GPU ids (e.g. 0) if desired.
 
 Parameters
 +++++++++++++++
-
-- gpus                        Number of gpus to train with                             [0:         int]
-- accelerator                 Accelerator connecting to the Lightning Trainer          ['None'  string]
+- gpus                        Number of gpus to train with                             [2:         int]
+- accelerator                 Accelerator connecting to the Lightning Trainer          ['dp'  string]
 - max_epochs:                 Number of epochs to train                                [5:         int]
 - general-seed:               Python, Random, Numpy seed                               [0:         int]
 - pytorch-seed:               Pytorch specific seed                                    [0:         int]
-- training-batch-size:        Batch size for training batches                          [64:        int]
-- test-batch-size:            Batch size for test batches                              [1000:      int]
+- training-batch-size:        Batch size for training batches                          [20:        int]
+- test-batch-size:            Batch size for test batches                              [50:      int]
 - lr:                         Learning rate of the optimizer                           [0.01:    float]
 - log-interval:               Number of batches to train for before logging            [100:       int]
-
-TODO MLF-CORE: Write your usage and parameter documentation here.
+- alpha:                      Alpha for Focal Loss function                            [1.0:       float]
+- gamma-factor:               Gamma for the Focal Loss function                        [2.0:       float]
+- epsilon:                    Epsilon for the AdaBelief optimizer                      [1e-16:       float]
+- weight-decay:               Weight decay for the AdaBelief optimizer                 [1e-5:       float]
