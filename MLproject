@@ -1,14 +1,14 @@
 # Author: Julian Wanner
 # Email: jwgithub@mailbox.org
-# Version: 0.1.0
+# Version: 1.0.0
 # License: MIT
 
 
-name: rsphd
+name: root-tissue-segmentation
 
 conda_env: environment.yml
 #docker_env:
-#  image: ghcr.io/waseju/rsphd:0.1.0
+#  image: ghcr.io/waseju/root_tissue_segmentation:1.0.0
 #  volumes: ["${PWD}/data:/data"]
 #  environment: [["MLF_CORE_DOCKER_RUN", "TRUE"],["CUBLAS_WORKSPACE_CONFIG", ":4096:8"]]
 

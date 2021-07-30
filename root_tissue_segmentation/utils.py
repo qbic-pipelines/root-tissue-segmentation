@@ -9,8 +9,8 @@ def label2rgb(alpha, img, mask):
     return torch.from_numpy(labeled_img.transpose(2, 0, 1))
 
 
-def decode_segmap(image: np.array, num_classes: int=5):
-    label_colors = np.array([(255, 255, 255),(128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128)])
+def decode_segmap(image: np.array, num_classes: int = 5):
+    label_colors = np.array([(255, 255, 255), (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128)])
     r = np.zeros_like(image).astype(np.uint8)
     g = np.zeros_like(image).astype(np.uint8)
     b = np.zeros_like(image).astype(np.uint8)

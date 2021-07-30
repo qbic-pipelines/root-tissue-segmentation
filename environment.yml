@@ -1,4 +1,4 @@
-name: rsphd
+name: root_tissue_segmentation
 channels:
   - conda-forge
   - bioconda
@@ -149,4 +149,4 @@ dependencies:
     - werkzeug==2.0.1
     - wrapt==1.12.1
     - yarl==1.6.3
-prefix: /home/ubuntu/miniconda3/envs/rsphd
+prefix: /home/ubuntu/miniconda3/envs/root-tissue-segmentation

@@ -5,9 +5,9 @@ from torch import nn
 
 __all__ = ['UNET','NESTEDUNET','U2NET']
 
-# Originally contained own implementation of was changed because of weight init and adopted from https://github.com/ShawnBIT/UNet-family/blob/master/networks/UNet.py
+# Originally contained own implementation of was changed because of weight init
+# and adopted from https://github.com/ShawnBIT/UNet-family/blob/master/networks/UNet.py
 
-### initalize the module
 from models.unet_super import UNetsuper
 from models.unet_utils import init_weights, unetConv2, unetUp, _size_map, _upsample_like, RSU
 

@@ -35,12 +35,12 @@ class PHDFMDataModule(pl.LightningDataModule):
         Downloads the data, parse it and split the data into PHDFM, test, validation data
         :param stage: Stage - training or testing
         """
-        self.df_train = PHDFM(root='rsphd/dataset', set="training", transform=self.transform, download=True)
+        self.df_train = PHDFM(root='root_tissue_segmentation/dataset', set="training", transform=self.transform, download=True)
         # Val and Test are currently the same, as the final application is the "test" set.
-        self.df_val = PHDFM('rsphd/dataset', set="validation",
+        self.df_val = PHDFM('root_tissue_segmentation/dataset', set="validation",
                             transform=Compose([transforms.Normalize(0.6993, 0.4158, 255, always_apply=True)]),
                             download=True)
-        self.df_test = PHDFM('rsphd/dataset', set="test",
+        self.df_test = PHDFM('root_tissue_segmentation/dataset', set="test",
                              transform=Compose([transforms.Normalize(0.6993, 0.4158, 255, always_apply=True)]),
                              download=True)
 

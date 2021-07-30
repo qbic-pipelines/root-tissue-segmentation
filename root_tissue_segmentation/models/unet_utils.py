@@ -75,7 +75,8 @@ class unetUp(nn.Module):
 
         # initialise the blocks
         for m in self.children():
-            if m.__class__.__name__.find('unetConv2') != -1: continue
+            if m.__class__.__name__.find('unetConv2') != -1:
+                continue
             init_weights(m, init_type='kaiming')
 
     def forward(self, high_feature, *low_feature):
@@ -153,5 +154,3 @@ class RSU(nn.Module):
 
         dilate = 2 if not dilated else 2 ** (height - 1)
         self.add_module(f'rebnconv{height}', REBNCONV(mid_ch, mid_ch, dilate=dilate))
-
-

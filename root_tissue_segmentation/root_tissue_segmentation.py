@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     dm = PHDFMDataModule(**dict_args)
 
-    MLFCore.log_input_data('rsphd/dataset/PHDFM')
+    MLFCore.log_input_data('root_tissue_segmentation/dataset/PHDFM')
     if 'class_weights' not in dict_args.keys():
         weights = dm.df_train.class_weights
         dict_args['class_weights'] = weights.query('set_name=="training"')['weights'].tolist()
@@ -84,7 +84,7 @@ if __name__ == "__main__":
         lr_monitor = LearningRateMonitor(logging_interval='epoch')
         trainer = pl.Trainer.from_argparse_args(args, callbacks=[checkpoint_callback, lr_monitor],
                                                 default_root_dir=os.getcwd() + "/mlruns",
-                                                logger=TensorBoardLogger(f'data'))
+                                                logger=TensorBoardLogger('data'))
         tensorboard_output_path = f'data/default/version_{trainer.logger.version}'
 
     trainer.deterministic = True
