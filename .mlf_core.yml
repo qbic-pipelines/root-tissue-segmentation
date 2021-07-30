@@ -1,0 +1,18 @@
+domain: mlflow
+language: pytorch
+project_slug: root-tissue-segmentation
+project_slug_no_hyphen: root_tissue_segmentation
+template_version: '2.0.0 # <<MLF-CORE_NO_BUMP>>'
+template_handle: mlflow-pytorch
+github_username: waseju
+creator_github_username: waseju
+is_github_repo: true
+is_repo_private: false
+is_github_orga: false
+full_name: Julian Wanner
+email: jwgithub@mailbox.org
+project_name: root-tissue-segmentation
+project_short_description: Project to automate the segment the root tissue of A. thaliana
+  into 5 different classes, includes automated HPO.
+version: 1.0.0
+license: MIT
