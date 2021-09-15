@@ -25,7 +25,6 @@ Features
 --------
 
 * Fully reproducible mlf-core Pytorch model
-* MLF-CORE TODO: Write features here
 
 
 Credits
