@@ -191,8 +191,8 @@ class PHDFM(data.Dataset):
         val_ids, test_ids = train_test_split(val_test_ids, test_size=0.5, random_state=42)
 
         ids = {"training": train_ids,
-               "test": val_test_ids,
-               "validation": val_test_ids}
+               "test": test_ids,
+               "validation": val_ids}
 
         classes = ['background', 'root', 'early elongation zone', 'late elongation zone', 'meristematic zone']
         tensors = {}
