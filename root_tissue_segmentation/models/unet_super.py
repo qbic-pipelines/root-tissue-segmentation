@@ -15,7 +15,7 @@ from utils import label2rgb, unnormalize
 
 
 class UNetsuper(pl.LightningModule):
-    def __init__(self, num_classes, len_test_set: int, hparams: dict, **kwargs):
+    def __init__(self, num_classes, len_test_set: int, hparams: dict, input_channels=1, min_filter=32, **kwargs):
         super(UNetsuper, self).__init__()
         self.num_classes = num_classes
         self.metric = iou_score
@@ -24,7 +24,7 @@ class UNetsuper(pl.LightningModule):
         self.len_test_set = len_test_set
         self.weights = kwargs['class_weights']
         self.alphas = [kwargs[f'alpha_{x}'] for x in range(5)]
-        self.criterion = FocalLoss(alpha=kwargs['alpha_1'], gamma=kwargs['gamma'])
+        self.criterion = FocalLoss(alpha=kwargs['alpha_1'], gamma=kwargs['gamma_factor'])
         """
         self.criterion = torch.hub.load(
             'adeelh/pytorch-multi-class-focal-loss',
@@ -39,7 +39,7 @@ class UNetsuper(pl.LightningModule):
     @staticmethod
     def add_model_specific_args(parent_parser):
         parser = ArgumentParser(parents=[parent_parser], add_help=False)
-        parser.add_argument('--num_workers', type=int, default=16, metavar='N', help='number of workers (default: 3)')
+        parser.add_argument('--num_workers', type=int, default=0, metavar='N', help='number of workers (default: 3)')
         parser.add_argument('--lr', type=float, default=0.01, help='learning rate (default: 0.01)')
         parser.add_argument('--gamma-factor', type=float, default=2.0, help='learning rate (default: 0.01)')
         parser.add_argument('--weight-decay', type=float, default=1e-5, help='learning rate (default: 0.01)')

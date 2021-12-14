@@ -72,7 +72,7 @@ def objective(
 ) -> float:
     hparams = suggest_hyperparameters(trial)
     mlflow_path = "mlruns"
-    # remove_previous_model(mlflow_path)
+    remove_previous_model(mlflow_path)
     val_iou = run_mlflow_project(hparams, "HPO Optimization")
     return val_iou
 
