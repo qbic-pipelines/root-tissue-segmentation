@@ -22,7 +22,7 @@ class PHDFM(data.Dataset):
 
     resources = [
         ("images.tar.gz", "18Fd4WQ_M6gz9qV-43rPjkRmNw2LT3zxI/view?usp=sharing", "54e12b0ad17e4d89796d64b92801c90a"),
-        ("masks.tar.gz", "12ViQsa9K8EqgJE1DrhFJiKot41WUEj3R/view?usp=sharing", "b7fa40aa75788235f9fa3696b760ea2d"),
+        ("masks.tar.gz", "1MvOwd5-FGchYg8RxFJCuzKu3WVWxIjNw/view?usp=sharing", "b7fa40aa75788235f9fa3696b760ea2d"),
     ]
 
     training_file = 'training.pt'
