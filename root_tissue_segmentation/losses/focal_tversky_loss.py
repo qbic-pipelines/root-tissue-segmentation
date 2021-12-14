@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
 class FocalLoss(nn.Module):
@@ -19,7 +18,8 @@ class FocalLoss(nn.Module):
     :param size_average: (bool, optional) By default, the losses are averaged over each loss element in the batch.
     """
 
-    def __init__(self, apply_nonlin=None, alpha=None, gamma: float=2.0, balance_index=0, smooth=1e-5, size_average=True):
+    def __init__(self, apply_nonlin=None, alpha=None, gamma: float = 2.0, balance_index=0, smooth=1e-5,
+                 size_average=True):
         super(FocalLoss, self).__init__()
         self.apply_nonlin = apply_nonlin
         self.alpha = alpha
@@ -66,7 +66,6 @@ class FocalLoss(nn.Module):
 
         if alpha.device != logit.device:
             alpha = alpha.to(logit.device)
-
 
         idx = target.cpu().long()
 

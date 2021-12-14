@@ -12,7 +12,6 @@ import torch
 import torch.utils.data
 import torch.utils.data as data
 from sklearn.model_selection import train_test_split
-from sklearn.utils.class_weight import compute_class_weight
 from torchvision.datasets.utils import download_and_extract_archive
 
 
@@ -220,13 +219,14 @@ class PHDFM(data.Dataset):
             masks = torch.stack(training[1], dim=0)
             wt = []
             for i in range(5):
-                post = len(masks[masks==i])
-                neg = len(masks[masks!=i])+post
-                wt.append(post/neg)
-            weights = 1/np.array(wt)
-            print(weights/np.max(weights))
+                post = len(masks[masks == i])
+                neg = len(masks[masks != i]) + post
+                wt.append(post / neg)
+            weights = 1 / np.array(wt)
+            print(weights / np.max(weights))
             unique = np.unique(masks)
-            class_weights = weights/np.max(weights)#compute_class_weight('balanced', unique, masks.numpy().flatten())
+            class_weights = weights / np.max(
+                weights)  # compute_class_weight('balanced', unique, masks.numpy().flatten())
             weights = pd.DataFrame({"class_ids": unique, "classes": classes, "weights": class_weights})
             weights['set_name'] = set_name
             weight_df = weight_df.append(weights, ignore_index=True)

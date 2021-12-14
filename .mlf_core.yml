@@ -13,6 +13,6 @@ full_name: Julian Wanner
 email: jwgithub@mailbox.org
 project_name: root-tissue-segmentation
 project_short_description: Project to automate the segment the root tissue of A. thaliana
-  into 5 different classes, includes automated HPO.
+    into 5 different classes, includes automated HPO.
 version: 1.0.0
 license: MIT

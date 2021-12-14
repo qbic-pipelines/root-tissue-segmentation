@@ -53,14 +53,14 @@ def suggest_hyperparameters(trial: optuna.Trial):
     :param trial: Optuna Trial object.
     :return: Dictionary containing the suggested hyperparameters.
     """
-    lr =  0.0013615251237209865#trial.suggest_float("lr", 1e-5, 1e-1, log=True)
-    weight_decay = 0.06967745801533658#trial.suggest_float("weight-decay", 1e-4, 5e-1, log=True)
-    epsilon = 3.170393250650158e-12#trial.suggest_float("epsilon", 1e-16, 1e-8, log=True)
-    gamma = trial.suggest_uniform("gamma-factor",1.4,3)
+    lr = 0.0013615251237209865  # trial.suggest_float("lr", 1e-5, 1e-1, log=True)
+    weight_decay = 0.06967745801533658  # trial.suggest_float("weight-decay", 1e-4, 5e-1, log=True)
+    epsilon = 3.170393250650158e-12  # trial.suggest_float("epsilon", 1e-16, 1e-8, log=True)
+    gamma = trial.suggest_uniform("gamma-factor", 1.4, 3)
 
-    max_epochs =56  # trial.suggest_int('max_epochs', low=50, high=100)
+    max_epochs = 56  # trial.suggest_int('max_epochs', low=50, high=100)
     hps = {'lr': lr, 'weight-decay': weight_decay, 'gamma-factor': gamma,
-     'epsilon': epsilon, 'max_epochs': max_epochs}
+           'epsilon': epsilon, 'max_epochs': max_epochs}
     for i in range(5):
         hps[f'alpha-{i}'] = trial.suggest_float(f"alpha_{i}", 1e-2, 1)
     print(f"Suggested hyperparameters: \n{pformat(trial.params)}")
@@ -72,7 +72,7 @@ def objective(
 ) -> float:
     hparams = suggest_hyperparameters(trial)
     mlflow_path = "mlruns"
-    #remove_previous_model(mlflow_path)
+    # remove_previous_model(mlflow_path)
     val_iou = run_mlflow_project(hparams, "HPO Optimization")
     return val_iou
 

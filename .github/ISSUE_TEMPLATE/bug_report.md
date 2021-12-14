@@ -1,9 +1,5 @@
 ---
-name: Bug report
-about: Create a bug report to help us improve
-title: 'Bug Summary'
-labels: 'bug'
-assignees: ''
+name: Bug report about: Create a bug report to help us improve title: 'Bug Summary' labels: 'bug' assignees: ''
 
 ---
 
@@ -14,6 +10,7 @@ assignees: ''
 **To Reproduce**
 
 Steps to reproduce the behavior:
+
 1. ...
 2. ...
 3. ...
@@ -23,9 +20,9 @@ Steps to reproduce the behavior:
 
 **System [please complete the following information]:**
 
- - OS: e.g. [Ubuntu 18.04]
- - Language Version: [e.g. Python 3.8]
- - Virtual environment: [e.g. Conda]
+- OS: e.g. [Ubuntu 18.04]
+- Language Version: [e.g. Python 3.8]
+- Virtual environment: [e.g. Conda]
 
 **Additional context**
 
