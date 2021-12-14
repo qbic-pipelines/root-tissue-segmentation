@@ -53,14 +53,18 @@ def suggest_hyperparameters(trial: optuna.Trial):
     :param trial: Optuna Trial object.
     :return: Dictionary containing the suggested hyperparameters.
     """
-    lr = trial.suggest_float("lr", 1e-7, 1, log=True)
-    weight_decay = trial.suggest_float("weight-decay", 1e-9, 1e-1, log=True)
-    epsilon = trial.suggest_float("epsilon", 1e-16, 1e-8, log=True)
-    gamma = trial.suggest_uniform('gamma-factor', low=1, high=3)
-    max_epochs = 90  # trial.suggest_int('max_epochs', low=50, high=100)
+    lr =  0.0013615251237209865#trial.suggest_float("lr", 1e-5, 1e-1, log=True)
+    weight_decay = 0.06967745801533658#trial.suggest_float("weight-decay", 1e-4, 5e-1, log=True)
+    epsilon = 3.170393250650158e-12#trial.suggest_float("epsilon", 1e-16, 1e-8, log=True)
+    gamma = trial.suggest_uniform("gamma-factor",1.4,3)
+
+    max_epochs =56  # trial.suggest_int('max_epochs', low=50, high=100)
+    hps = {'lr': lr, 'weight-decay': weight_decay, 'gamma-factor': gamma,
+     'epsilon': epsilon, 'max_epochs': max_epochs}
+    for i in range(5):
+        hps[f'alpha-{i}'] = trial.suggest_float(f"alpha_{i}", 1e-2, 1)
     print(f"Suggested hyperparameters: \n{pformat(trial.params)}")
-    return {'lr': lr, 'weight-decay': weight_decay, 'gamma-factor': gamma,
-            'epsilon': epsilon, 'max_epochs': max_epochs}
+    return hps
 
 
 def objective(
@@ -68,7 +72,7 @@ def objective(
 ) -> float:
     hparams = suggest_hyperparameters(trial)
     mlflow_path = "mlruns"
-    remove_previous_model(mlflow_path)
+    #remove_previous_model(mlflow_path)
     val_iou = run_mlflow_project(hparams, "HPO Optimization")
     return val_iou
 
@@ -107,6 +111,7 @@ def test_reproducibility(hparams: dict, n_trials_reproducibility: int = 10,
 def remove_previous_model(mlflow_path):
     try:
         os.remove(mlflow_path + "/best.ckpt")
+        os.remove(mlflow_path + "/lr_find_temp_model.ckpt")
     except OSError as e:
         print("Error: %s : %s" % (mlflow_path, e.strerror))
 

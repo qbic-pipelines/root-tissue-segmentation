@@ -22,7 +22,7 @@ class PHDFMDataModule(pl.LightningDataModule):
         self.args = kwargs
         # transforms for images, picked after evaluation of experimental environment.
         self.transform = Compose(
-            [transforms.Normalize(0.6993, 0.4158, 255, always_apply=True),
+            [#transforms.Normalize(0.6993, 0.4158, 255, always_apply=True),
              transforms.ShiftScaleRotate(shift_limit=0.1, scale_limit=0.1, rotate_limit=10, always_apply=False,
                                          p=0.5)],
         )
@@ -38,10 +38,14 @@ class PHDFMDataModule(pl.LightningDataModule):
         self.df_train = PHDFM(root='root_tissue_segmentation/dataset', set="training", transform=self.transform, download=True)
         # Val and Test are currently the same, as the final application is the "test" set.
         self.df_val = PHDFM('root_tissue_segmentation/dataset', set="validation",
-                            transform=Compose([transforms.Normalize(0.6993, 0.4158, 255, always_apply=True)]),
+                            transform=Compose([
+                            #    transforms.Normalize(0.6993, 0.4158, 255, always_apply=True)
+                            ]),
                             download=True)
         self.df_test = PHDFM('root_tissue_segmentation/dataset', set="test",
-                             transform=Compose([transforms.Normalize(0.6993, 0.4158, 255, always_apply=True)]),
+                             transform=Compose([
+                             #    transforms.Normalize(0.6993, 0.4158, 255, always_apply=True)
+                             ]),
                              download=True)
 
     def train_dataloader(self):

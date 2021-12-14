@@ -187,12 +187,12 @@ class PHDFM(data.Dataset):
         """
         img_ids = glob(os.path.join(self.raw_folder, "images", '*' + ".png"))
         img_ids = sorted([os.path.splitext(os.path.basename(p))[0] for p in img_ids])
-        train_ids, val_test_ids = train_test_split(img_ids, test_size=0.3, random_state=42)
+        train_ids, val_test_ids = train_test_split(img_ids, test_size=0.2, random_state=42)
         val_ids, test_ids = train_test_split(val_test_ids, test_size=0.5, random_state=42)
 
         ids = {"training": train_ids,
-               "test": test_ids,
-               "validation": val_ids}
+               "test": val_test_ids,
+               "validation": val_test_ids}
 
         classes = ['background', 'root', 'early elongation zone', 'late elongation zone', 'meristematic zone']
         tensors = {}
@@ -215,10 +215,18 @@ class PHDFM(data.Dataset):
                 training[0].append(torch.FloatTensor(img))
                 training[1].append(torch.IntTensor(mask))
                 training[2].append(int(img_id))
+
             imgs = torch.stack(training[0], dim=0)
             masks = torch.stack(training[1], dim=0)
+            wt = []
+            for i in range(5):
+                post = len(masks[masks==i])
+                neg = len(masks[masks!=i])+post
+                wt.append(post/neg)
+            weights = 1/np.array(wt)
+            print(weights/np.max(weights))
             unique = np.unique(masks)
-            class_weights = compute_class_weight('balanced', unique, masks.numpy().flatten())
+            class_weights = weights/np.max(weights)#compute_class_weight('balanced', unique, masks.numpy().flatten())
             weights = pd.DataFrame({"class_ids": unique, "classes": classes, "weights": class_weights})
             weights['set_name'] = set_name
             weight_df = weight_df.append(weights, ignore_index=True)
