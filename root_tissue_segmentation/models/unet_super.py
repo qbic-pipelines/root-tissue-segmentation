@@ -5,17 +5,17 @@ from typing import Any, Optional
 import cv2
 import pytorch_lightning as pl
 import torch
+from pytorch_toolbelt.losses import FocalLoss
 from torch_optimizer import AdaBelief
 
 __all__ = ['UNetsuper']
 
-# Adopted from https://github.com/xuebinqin/U-2-Net
 from metric.iou import iou_score
 from utils import label2rgb, unnormalize
 
 
 class UNetsuper(pl.LightningModule):
-    def __init__(self, num_classes, len_test_set: int, hparams: dict, input_channels=1, min_filter=32, **kwargs):
+    def __init__(self, num_classes, len_test_set: int, hparams: dict, **kwargs):
         super(UNetsuper, self).__init__()
         self.num_classes = num_classes
         self.metric = iou_score
@@ -23,14 +23,18 @@ class UNetsuper(pl.LightningModule):
         self.args = kwargs
         self.len_test_set = len_test_set
         self.weights = kwargs['class_weights']
+        self.alphas = [kwargs[f'alpha_{x}'] for x in range(5)]
+        self.criterion = FocalLoss(alpha=kwargs['alpha_1'], gamma=kwargs['gamma'])
+        """
         self.criterion = torch.hub.load(
             'adeelh/pytorch-multi-class-focal-loss',
             model='FocalLoss',
             alpha=torch.tensor(self.weights),
-            gamma=kwargs["gamma_factor"],
+            gamma=2,
             reduction='mean',
             force_reload=False
         )
+        """
 
     @staticmethod
     def add_model_specific_args(parent_parser):
@@ -40,11 +44,14 @@ class UNetsuper(pl.LightningModule):
         parser.add_argument('--gamma-factor', type=float, default=2.0, help='learning rate (default: 0.01)')
         parser.add_argument('--weight-decay', type=float, default=1e-5, help='learning rate (default: 0.01)')
         parser.add_argument('--epsilon', type=float, default=1e-16, help='learning rate (default: 0.01)')
-        parser.add_argument('--alpha', type=float, default=1, help='learning rate (default: 0.01)')
+        parser.add_argument('--alpha-0', type=float, default=1, help='learning rate (default: 0.01)')
+        parser.add_argument('--alpha-1', type=float, default=1, help='learning rate (default: 0.01)')
+        parser.add_argument('--alpha-2', type=float, default=1, help='learning rate (default: 0.01)')
+        parser.add_argument('--alpha-3', type=float, default=1, help='learning rate (default: 0.01)')
+        parser.add_argument('--alpha-4', type=float, default=1, help='learning rate (default: 0.01)')
         parser.add_argument('--model', type=str, default="u2net", help='learning rate (default: 0.01)')
         parser.add_argument('--training-batch-size', type=int, default=20, help='Input batch size for training')
         parser.add_argument('--test-batch-size', type=int, default=1000, help='Input batch size for testing')
-
         return parser
 
     @abc.abstractmethod
@@ -58,7 +65,7 @@ class UNetsuper(pl.LightningModule):
         :return: output - Initialized cross entropy loss function
         """
         labels = labels.long()
-        return self.criterion(logits, labels)
+        return self.criterion(logits.squeeze(), labels.squeeze())
 
     def training_step(self, train_batch, batch_idx):
         """
@@ -166,12 +173,13 @@ class UNetsuper(pl.LightningModule):
 
         :return: output - Initialized optimizer and scheduler
         """
-        self.optimizer = AdaBelief(self.parameters(), lr=self.args['lr'], eps=self.args['epsilon'],
+        self.optimizer = AdaBelief(self.parameters(), lr=self.hparams['lr'], eps=self.args['epsilon'],
                                    betas=(0.9, 0.999),
                                    weight_decay=self.args['weight_decay'],
                                    weight_decouple=True)
+        print(self.hparams["lr"])
         self.scheduler = {
-            'scheduler': torch.optim.lr_scheduler.OneCycleLR(self.optimizer, max_lr=self.args['lr'],
+            'scheduler': torch.optim.lr_scheduler.OneCycleLR(self.optimizer, max_lr=self.hparams['lr'],
                                                              total_steps=self.args["max_epochs"],
                                                              pct_start=0.45, three_phase=True),
             'monitor': 'train_avg_loss',
