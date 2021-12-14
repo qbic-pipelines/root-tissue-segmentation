@@ -39,7 +39,7 @@ class UNetsuper(pl.LightningModule):
     @staticmethod
     def add_model_specific_args(parent_parser):
         parser = ArgumentParser(parents=[parent_parser], add_help=False)
-        parser.add_argument('--num_workers', type=int, default=16, metavar='N', help='number of workers (default: 3)')
+        parser.add_argument('--num_workers', type=int, default=0, metavar='N', help='number of workers (default: 3)')
         parser.add_argument('--lr', type=float, default=0.01, help='learning rate (default: 0.01)')
         parser.add_argument('--gamma-factor', type=float, default=2.0, help='learning rate (default: 0.01)')
         parser.add_argument('--weight-decay', type=float, default=1e-5, help='learning rate (default: 0.01)')

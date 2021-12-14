@@ -9,7 +9,8 @@ name: root-tissue-segmentation
 #conda_env: environment.yml
 docker_env:
   image: rootseg:latest
-  #volumes: ["${PWD}/data:/data"]
+  volumes: ["${PWD}/data:/data"]
+  run_params: [['--gpus', 'all'],['--ipc','host']]
 environment: [["MLF_CORE_DOCKER_RUN", "TRUE"],["CUBLAS_WORKSPACE_CONFIG", ":4096:8"]]
 
 entry_points:
