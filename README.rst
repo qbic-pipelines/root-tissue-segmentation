@@ -32,7 +32,7 @@ The project includes automated HPO.
 Results
 -------
 
- A reproducibility analysis was conducted using this project. Models were trained a number of times (n = 10), and segmentation performance (IoU) was evaluated on the test set for each of the training runs. Quantitative results show no variation between training runs.
+A reproducibility analysis was conducted using this project. Models were trained a number of times (n = 10), and segmentation performance (IoU) was evaluated on the test set for each of the training runs. Quantitative results show no variation between training runs.
 
 .. image:: docs/images/rep_of_pred.png
         :alt: Reproducibility of results
