@@ -19,26 +19,24 @@ root-tissue-segmentation
         :target: https://waseju.github.io/root-tissue-segmentation
         :alt: Documentation Status
 
-Reproducible semantic segmentation of fluorescence microscopy images of root tissue samples from A. thaliana. The training dataset consist 2D fluorescence microscopy (FM) images with one brightfield channel, and two fluorescence channels for pH sensitive markers. This project trains U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict segmentation masks that classify pixels into 5 clases, background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ).
+Reproducible semantic segmentation of fluorescence microscopy images of root tissue samples from A. thaliana. The training dataset consist 2D fluorescence microscopy (FM) images with one brightfield channel, and two fluorescence channels for pH sensitive markers. This project trains Pytorch-based U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict segmentation masks that classify pixels into 5 clases, background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ).
 
 .. image:: docs/images/fm_seg_dataset.png
         :alt: FM dataset
         :scale: 1
 
-The figure shows the following color-coded labels: Background (white), Root (blue), Meristematic Zone (red), Early Elongation Zone (green), Late Elongation Zone (cyan).
+The figure above shows the following color-coded labels: Background (white), Root (blue), Meristematic Zone (red), Early Elongation Zone (green), Late Elongation Zone (cyan).
 
-Quantitative results (IoU) show no variation during reproducibility analysis.
+The project includes automated HPO.
+
+Results
+-------
+
+ A reproducibility analysis was conducted using this project. Models were trained a number of times (n = 10), and segmentation performance (IoU) was evaluated on the test set for each of the training runs. Quantitative results show no variation between training runs.
 
 .. image:: docs/images/rep_of_pred.png
         :alt: Reproducibility of results
         :scale: 1
-
-The project includes automated HPO.
-
-Features
---------
-
-* Fully reproducible mlf-core Pytorch models
 
 Background Summary Slide
 -------------
