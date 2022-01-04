@@ -12,7 +12,6 @@ import torch
 import torch.utils.data
 import torch.utils.data as data
 from sklearn.model_selection import train_test_split
-from sklearn.utils.class_weight import compute_class_weight
 from torchvision.datasets.utils import download_and_extract_archive
 
 
@@ -23,7 +22,7 @@ class PHDFM(data.Dataset):
 
     resources = [
         ("images.tar.gz", "18Fd4WQ_M6gz9qV-43rPjkRmNw2LT3zxI/view?usp=sharing", "54e12b0ad17e4d89796d64b92801c90a"),
-        ("masks.tar.gz", "12ViQsa9K8EqgJE1DrhFJiKot41WUEj3R/view?usp=sharing", "b7fa40aa75788235f9fa3696b760ea2d"),
+        ("masks.tar.gz", "1MvOwd5-FGchYg8RxFJCuzKu3WVWxIjNw/view?usp=sharing", "b7fa40aa75788235f9fa3696b760ea2d"),
     ]
 
     training_file = 'training.pt'
@@ -187,7 +186,7 @@ class PHDFM(data.Dataset):
         """
         img_ids = glob(os.path.join(self.raw_folder, "images", '*' + ".png"))
         img_ids = sorted([os.path.splitext(os.path.basename(p))[0] for p in img_ids])
-        train_ids, val_test_ids = train_test_split(img_ids, test_size=0.3, random_state=42)
+        train_ids, val_test_ids = train_test_split(img_ids, test_size=0.2, random_state=42)
         val_ids, test_ids = train_test_split(val_test_ids, test_size=0.5, random_state=42)
 
         ids = {"training": train_ids,
@@ -215,10 +214,19 @@ class PHDFM(data.Dataset):
                 training[0].append(torch.FloatTensor(img))
                 training[1].append(torch.IntTensor(mask))
                 training[2].append(int(img_id))
+
             imgs = torch.stack(training[0], dim=0)
             masks = torch.stack(training[1], dim=0)
+            wt = []
+            for i in range(5):
+                post = len(masks[masks == i])
+                neg = len(masks[masks != i]) + post
+                wt.append(post / neg)
+            weights = 1 / np.array(wt)
+            print(weights / np.max(weights))
             unique = np.unique(masks)
-            class_weights = compute_class_weight('balanced', unique, masks.numpy().flatten())
+            class_weights = weights / np.max(
+                weights)  # compute_class_weight('balanced', unique, masks.numpy().flatten())
             weights = pd.DataFrame({"class_ids": unique, "classes": classes, "weights": class_weights})
             weights['set_name'] = set_name
             weight_df = weight_df.append(weights, ignore_index=True)

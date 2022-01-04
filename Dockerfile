@@ -1,6 +1,9 @@
 FROM mlfcore/base:1.2.0
 
 # Install the conda environment
+RUN sudo apt-get update
+RUN sudo DEBIAN_FRONTEND="noninteractive"  apt-get -y install tzdata
+RUN sudo apt-get install -y --reinstall openmpi-bin libopenmpi-dev
 COPY environment.yml .
 RUN conda env create -f environment.yml && conda clean -a
 
