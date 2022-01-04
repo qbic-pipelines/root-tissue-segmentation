@@ -29,8 +29,15 @@ The figure above shows the following color-coded labels: Background (white), Roo
 
 The project includes automated HPO.
 
-Results
--------
+Activity Diagram
+----------------
+
+.. image:: docs/images/rts-model-activity-diagram.png
+        :alt: Activity diagram
+        :scale: 1
+
+Reproducibility Results
+-----------------------
 
 A reproducibility analysis was conducted using this project. Models were trained a number of times (n = 10), and segmentation performance (IoU) was evaluated on the test set for each of the training runs. Quantitative results show no variation between training runs.
 
