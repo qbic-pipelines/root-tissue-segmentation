@@ -19,12 +19,32 @@ root-tissue-segmentation
         :target: https://waseju.github.io/root-tissue-segmentation
         :alt: Documentation Status
 
-Project to automate the segment the root tissue of A. thaliana into 5 different classes, includes automated HPO.
+Reproducible semantic segmentation of fluorescence microscopy images of root tissue samples from A. thaliana. The training dataset consist 2D fluorescence microscopy (FM) images with one brightfield channel, and two fluorescence channels for pH sensitive markers. This project trains U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict segmentation masks that classify pixels into 5 clases, background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ).
+
+.. image:: docs/images/fm_seg_dataset.png
+        :alt: FM dataset
+        :scale: 1
+
+The figure shows the following color-coded labels: Background (white), Root (blue), Meristematic Zone (red), Early Elongation Zone (green), Late Elongation Zone (cyan).
+
+Quantitative results (IoU) show no variation during reproducibility analysis.
+
+.. image:: docs/images/rep_of_pred.png
+        :alt: Reproducibility of results
+        :scale: 1
+
+The project includes automated HPO.
 
 Features
 --------
 
-* Fully reproducible mlf-core Pytorch model
+* Fully reproducible mlf-core Pytorch models
+
+Background Summary Slide
+-------------
+.. image:: docs/images/bio_background_slide.png
+        :alt: Background slide
+        :scale: 1
 
 
 Credits
@@ -32,5 +52,8 @@ Credits
 
 This package was created with `mlf-core`_ using cookiecutter_.
 
+.. _U-Net: https://lmb.informatik.uni-freiburg.de/Publications/2015/RFB15a/
+.. _U-Net++: https://arxiv.org/abs/1807.10165
+.. _U2-Net: https://arxiv.org/abs/2005.09007
 .. _mlf-core: https://mlf-core.readthedocs.io/en/latest/
 .. _cookiecutter: https://github.com/audreyr/cookiecutter
