@@ -48,7 +48,7 @@ A reproducibility analysis was conducted using this project. Models were trained
 Biological Background
 ---------------------
 
-This package aims to do root tissue segmentation for pH measurement analysis to aid in validation of the acid-growth hypothesis, which explains the expansion of cells in root tissue. This acid-growth pathway model needs substantial pH measurement data for validation, however data generation is time consuming, with manual annotation of ROIs for pH value analysis being the mayor bottle-neck.
+This package aims to conduct root tissue segmentation for pH measurement analysis based on FM data, to aid in the validation of the acid-growth hypothesis, which explains the expansion of cells in root tissue. This acid-growth pathway model needs substantial pH measurement data for validation, however data generation is time consuming, with manual annotation of ROIs for pH value analysis being the mayor bottle-neck.
 
 .. image:: docs/images/bio_background.png
         :alt: Background slide
