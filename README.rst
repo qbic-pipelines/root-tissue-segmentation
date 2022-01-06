@@ -19,13 +19,13 @@ root-tissue-segmentation
         :target: https://waseju.github.io/root-tissue-segmentation
         :alt: Documentation Status
 
-Reproducible semantic segmentation of fluorescence microscopy images of root tissue samples from A. thaliana. The training dataset consist 2D fluorescence microscopy (FM) images with one brightfield channel, and two fluorescence channels for pH sensitive markers (PHDFM dataset). This project trains Pytorch-based U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict segmentation masks that classify pixels into 5 clases, background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ).
+Reproducible, deep-learning approach to segment microscopy images of root tissue samples from *A. thaliana*. The training dataset consist 2D fluorescence microscopy (FM) images with one brightfield channel, and two fluorescence channels for pH sensitive markers (PHDFM dataset). This project trains Pytorch-based U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict semantic segmentation masks that classify pixels into 5 clases, background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ).
 
 .. image:: docs/images/fm_seg_dataset.png
         :alt: FM dataset
         :scale: 1
 
-The figure above shows the following color-coded labels: Background (white), Root (blue), Meristematic Zone (red), Early Elongation Zone (green), Late Elongation Zone (cyan).
+The figure above depicts color-coded class labels as follows: Background (white), Root (blue), Meristematic Zone (red), Early Elongation Zone (green), Late Elongation Zone (cyan).
 
 The project includes automated HPO.
 
@@ -39,7 +39,7 @@ Activity Diagram
 Reproducibility Results
 -----------------------
 
-A reproducibility analysis was conducted using this project. Models were trained a number of times (n = 10), and segmentation performance (IoU) was evaluated on the test set for each of the training runs. Quantitative results show no variation between training runs.
+A reproducibility analysis was conducted using this project. Models were trained a number of times (*n = 10*), and segmentation performance (IoU) was measured after each training run. Performance metrics show no variation between training runs.
 
 .. image:: docs/images/rep_of_pred.png
         :alt: Reproducibility of results
@@ -48,7 +48,7 @@ A reproducibility analysis was conducted using this project. Models were trained
 Biological Background
 ---------------------
 
-This package aims to do root tissue segmentation for pH measurement analysis to aid in testing of the acid-growth hypothesis, which explains the expansion of cells in root tissue. This acid-growth pathway model needs pH measurement data for validation, however data generation is time consuming, with manual annotation of ROIs for pH value analysis being a mayor bottle-neck.
+This package aims to do root tissue segmentation for pH measurement analysis to aid in validation of the acid-growth hypothesis, which explains the expansion of cells in root tissue. This acid-growth pathway model needs substantial pH measurement data for validation, however data generation is time consuming, with manual annotation of ROIs for pH value analysis being the mayor bottle-neck.
 
 .. image:: docs/images/bio_background.png
         :alt: Background slide
