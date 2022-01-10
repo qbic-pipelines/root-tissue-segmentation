@@ -19,12 +19,40 @@ root-tissue-segmentation
         :target: https://waseju.github.io/root-tissue-segmentation
         :alt: Documentation Status
 
-Project to automate the segment the root tissue of A. thaliana into 5 different classes, includes automated HPO.
+Reproducible, deep-learning approach to segment microscopy images of root tissue samples from *A. thaliana*. The training dataset consist 2D fluorescence microscopy (FM) images with one brightfield channel, and two fluorescence channels for pH sensitive markers (PHDFM dataset). This project trains Pytorch-based U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict semantic segmentation masks that classify pixels into 5 clases, background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ).
 
-Features
---------
+.. image:: docs/images/fm_seg_dataset.png
+        :alt: FM dataset
+        :scale: 1
 
-* Fully reproducible mlf-core Pytorch model
+The figure above depicts color-coded class labels as follows: Background (white), Root (blue), Meristematic Zone (red), Early Elongation Zone (green), Late Elongation Zone (cyan).
+
+The project includes automated HPO.
+
+Activity Diagram
+----------------
+
+.. image:: docs/images/rts-model-activity-diagram.png
+        :alt: Activity diagram
+        :scale: 1
+
+Reproducibility Results
+-----------------------
+
+A reproducibility analysis was conducted using this project. Models were trained a number of times (*n = 10*), and segmentation performance (IoU) was measured after each training run. Performance metrics show no variation between training runs.
+
+.. image:: docs/images/rep_of_pred.png
+        :alt: Reproducibility of results
+        :scale: 1
+
+Biological Background
+---------------------
+
+This package aims to conduct root tissue segmentation for pH measurement analysis based on FM data, to aid in the validation of the acid-growth hypothesis, which explains the expansion of cells in root tissue. This acid-growth pathway model needs substantial pH measurement data for validation, however data generation is time consuming, with manual annotation of ROIs for pH value analysis being the mayor bottle-neck.
+
+.. image:: docs/images/bio_background.png
+        :alt: Background slide
+        :scale: 1
 
 
 Credits
@@ -32,5 +60,8 @@ Credits
 
 This package was created with `mlf-core`_ using cookiecutter_.
 
+.. _U-Net: https://lmb.informatik.uni-freiburg.de/Publications/2015/RFB15a/
+.. _U-Net++: https://arxiv.org/abs/1807.10165
+.. _U2-Net: https://arxiv.org/abs/2005.09007
 .. _mlf-core: https://mlf-core.readthedocs.io/en/latest/
 .. _cookiecutter: https://github.com/audreyr/cookiecutter
