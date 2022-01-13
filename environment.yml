@@ -149,6 +149,6 @@ dependencies:
             - werkzeug==2.0.1
             - wrapt==1.12.1
             - yarl==1.6.3
-            - tifffile==2021.11.2
+            - tifffile==2021.4.8
             - requests==2.27.1
 prefix: /home/ubuntu/miniconda3/envs/root-tissue-segmentation
