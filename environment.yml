@@ -21,9 +21,6 @@ dependencies:
     - system-intelligence==2.0.2
     - adabelief-pytorch==0.2.1
     - click==8.0.0
-    - imageio==2.9.0
-    - imgaug==0.4.0
-    - jinja2==3.0.1
     - mpi4py==3.0.*
     - pytorch-toolbelt==0.4.3
     - scikit-image==0.18.1

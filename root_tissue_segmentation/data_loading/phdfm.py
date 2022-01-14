@@ -142,7 +142,7 @@ class PHDFM(data.Dataset):
         # naive downloading code, can be improved
         print("Downloading {}".format(self.dataset_url))
         url_response = requests.get(self.dataset_url, stream=True)
-        dataset_file = tarfile.open(fileobj=response.raw, mode="r|gz")
+        dataset_file = tarfile.open(fileobj=url_response.raw, mode="r|gz")
         dataset_file.extractall(path=self.raw_folder)
 
         # process and save as torch files
