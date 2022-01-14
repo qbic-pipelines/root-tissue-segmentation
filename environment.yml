@@ -3,7 +3,9 @@ channels:
   - defaults
   - conda-forge
   - pytorch
+  - nvidia
 dependencies:
+  - nvidia::cudatoolkit=11.1.74
   - defaults::python=3.9.2
   - defaults::boto3=1.17.20
   - conda-forge::tensorboardx=2.1
@@ -17,3 +19,15 @@ dependencies:
     - pycuda==2020.1  # not on Conda
     - cloudpickle==1.6.0
     - system-intelligence==2.0.2
+    - adabelief-pytorch==0.2.1
+    - click==8.0.0
+    - imageio==2.9.0
+    - imgaug==0.4.0
+    - jinja2==3.0.1
+    - mpi4py==3.0.*
+    - pytorch-toolbelt==0.4.3
+    - scikit-image==0.18.1
+    - scikit-learn==0.24.2
+    - scipy==1.6.3
+    - tifffile==2021.4.8
+    - requests==2.25.1
