@@ -3,9 +3,7 @@ channels:
   - defaults
   - conda-forge
   - pytorch
-  - nvidia
 dependencies:
-  - nvidia::cudatoolkit=11.1.74
   - defaults::python=3.9.2
   - defaults::boto3=1.17.20
   - conda-forge::tensorboardx=2.1
