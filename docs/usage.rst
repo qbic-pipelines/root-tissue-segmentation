@@ -33,9 +33,7 @@ No further parameters are required.
 Training using GPUs
 +++++++++++++++++++++++
 
-Regularly used commands:
-``mlflow run . -A gpus=all``
-``mlflow run . -A gpus=all -P max_epochs=2``
+Regularly used commands: ``mlflow run . -A gpus=all``, ``mlflow run . -A gpus=all -P max_epochs=2``.
 
 Please see the `mlflow documentation <https://www.mlflow.org/docs/latest/cli.html#mlflow-run>`_
 
