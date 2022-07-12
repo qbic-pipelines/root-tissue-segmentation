@@ -100,16 +100,24 @@ def _size_map(x, height):
     return sizes
 
 
+def set_dropout(model, drop_rate=0.5):
+    for name, child in model.named_children():
+        if isinstance(child, torch.nn.Dropout):
+            child.p = drop_rate
+        set_dropout(child, drop_rate=drop_rate)
+
+
 class REBNCONV(nn.Module):
     def __init__(self, in_ch=3, out_ch=3, dilate=1):
         super(REBNCONV, self).__init__()
 
+        self.dropout_1 = nn.Dropout2d(0.0)
         self.conv_s1 = nn.Conv2d(in_ch, out_ch, 3, padding=1)
         self.bn_s1 = nn.BatchNorm2d(out_ch)
         self.relu_s1 = nn.ReLU(inplace=True)
 
     def forward(self, x):
-        return self.relu_s1(self.bn_s1(self.conv_s1(x)))
+        return self.relu_s1(self.bn_s1(self.conv_s1(self.dropout_1(x))))
 
 
 class RSU(nn.Module):
