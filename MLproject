@@ -16,21 +16,21 @@ environment: [["MLF_CORE_DOCKER_RUN", "TRUE"],["CUBLAS_WORKSPACE_CONFIG", ":4096
 entry_points:
   main:
     parameters:
-      max_epochs: {type: int, default: 56}
+      max_epochs: {type: int, default: 74}
       gpus: {type: int, default: 2}
       accelerator: {type str, default: "dp"}
-      training-batch-size: {type: int, default: 24}
-      test-batch-size: {type: int, default: 61}
-      lr: {type: float, default: 0.01}
-      weight-decay: {type: float, default: 0.00001}
-      gamma-factor: {type: float, default: 2.0}
+      training-batch-size: {type: int, default: 10}
+      test-batch-size: {type: int, default: 60}
+      lr: {type: float, default: 0.0005739979509018617}
+      weight-decay: {type: float, default: 0.08843850663784153}
+      gamma-factor: {type: float, default: 2.8074708243593878}
       model: {type: str, default: "u2net"}
-      epsilon: {type: float, default: 0.0000000000000001}
-      alpha-0: {type: float, default: 1}
-      alpha-1: {type: float, default: 1}
-      alpha-2: {type: float, default: 1}
-      alpha-3: {type: float, default: 1}
-      alpha-4: {type: float, default: 1}
+      epsilon: {type: float, default: 2.1335101419972938e-14}
+      alpha-0: {type: float, default: 0.39228916176765655}
+      alpha-1: {type: float, default: 0.4476337434213018}
+      alpha-2: {type: float, default: 0.8902483094365905}
+      alpha-3: {type: float, default: 0.6695418278351652}
+      alpha-4: {type: float, default: 0.9382751049017035}
       general-seed: {type: int, default: 0}
       pytorch-seed: {type: int, default: 0}
       log-interval: {type: int, default: 100}
