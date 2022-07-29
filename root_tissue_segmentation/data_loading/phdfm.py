@@ -17,6 +17,7 @@ from torchvision.datasets.utils import download_and_extract_archive
 import tifffile
 import requests
 import tarfile
+import shutil
 
 class PHDFM(data.Dataset):
     dataset_url = "https://zenodo.org/record/5841376/files/root-seg-dataset.tar.gz"
@@ -131,6 +132,7 @@ class PHDFM(data.Dataset):
 
     def download(self) -> None:
         """Download the PHDFM data if it doesn't exist in processed_folder already."""
+        shutil.copytree("/data/",self.processed_folder, copy_function=shutil.copy, dirs_exist_ok=True)
 
         if self._check_exists():
             return
@@ -173,10 +175,11 @@ class PHDFM(data.Dataset):
         ids = {"training": train_ids,
                "test": test_ids,
                "validation": val_ids}
-
+        print(ids)
         classes = ['background', 'root', 'early elongation zone', 'late elongation zone', 'meristematic zone']
         tensors = {}
         weight_df = pd.DataFrame(columns=["class_ids", "classes", "weights", "set_name"])
+        wt_all = [0,0,0,0,0]
         for set_name, set_ids in ids.items():
             training = [[], [], []]
             for img_id in set_ids:
@@ -191,6 +194,9 @@ class PHDFM(data.Dataset):
                 training[0].append(torch.FloatTensor(img))
                 training[1].append(torch.IntTensor(mask))
                 training[2].append(int(img_id))
+                unq = np.unique(mask.astype(int))
+                for i in unq:
+                    wt_all[i] += 1
 
             imgs = torch.stack(training[0], dim=0)
             masks = torch.stack(training[1], dim=0)
@@ -199,6 +205,7 @@ class PHDFM(data.Dataset):
                 post = len(masks[masks == i])
                 neg = len(masks[masks != i]) + post
                 wt.append(post / neg)
+              #  wt_all[i] += post
             weights = 1 / np.array(wt)
             print(weights / np.max(weights))
             unique = np.unique(masks)
@@ -209,4 +216,5 @@ class PHDFM(data.Dataset):
             weight_df = weight_df.append(weights, ignore_index=True)
             tensor = torch.cat([imgs, masks], dim=3)
             tensors[set_name] = tensor
+        print(wt_all)
         return tensors["training"], tensors["validation"], tensors["test"], weight_df

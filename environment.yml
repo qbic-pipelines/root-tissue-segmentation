@@ -13,7 +13,7 @@ dependencies:
   - conda-forge::rich=9.13.0
   - pytorch::pytorch=1.8.1
   - pytorch::torchvision=0.9.1
-  - pytorch-lightning=1.1.8
+  - pytorch-lightning=1.5.10
   - pip=21.0.1
   - pip:
     - pycuda==2020.1  # not on Conda
@@ -28,3 +28,5 @@ dependencies:
     - scipy==1.6.3
     - tifffile==2021.4.8
     - requests==2.25.1
+    - torch-optimizer==0.3.0
+    - albumentations==1.1.0

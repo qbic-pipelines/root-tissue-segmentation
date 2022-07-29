@@ -11,7 +11,7 @@ from data_loading.data_loader import PHDFMDataModule
 from mlf_core.mlf_core import MLFCore
 from models import unet
 from models.unet import U2NET
-
+from random import randint
 if __name__ == "__main__":
     parser = ArgumentParser(description='PyTorch Autolog PHDFM Example')
     parser.add_argument(
@@ -54,8 +54,7 @@ if __name__ == "__main__":
         elif dict_args['accelerator'] != 'dp':
             print(
                 f'[bold red]{dict_args["accelerator"]}[bold blue] currently not supported. Switching to [bold green]ddp!')
-            dict_args['accelerator'] = 'dp'
-
+            dict_args['accelerator'] = 'ddp'
     dm = PHDFMDataModule(**dict_args)
 
     MLFCore.log_input_data('root_tissue_segmentation/dataset/PHDFM')
@@ -74,14 +73,14 @@ if __name__ == "__main__":
 
     # check, whether the run is inside a Docker container or not
     if 'MLF_CORE_DOCKER_RUN' in os.environ:
-        checkpoint_callback = ModelCheckpoint(dirpath='/mlflow/tmp/mlruns', save_top_k=0, verbose=True,
-                                              monitor='train_avg_loss', mode='min')
+        checkpoint_callback = ModelCheckpoint(dirpath='/mlflow/tmp/mlruns', save_top_k=1, verbose=True,
+                                              monitor='val_avg_iou', mode='max', filename='best')
         trainer = pl.Trainer.from_argparse_args(args, checkpoint_callback=checkpoint_callback, default_root_dir='/data',
                                                 logger=TensorBoardLogger('/data'))
         tensorboard_output_path = f'data/default/version_{trainer.logger.version}'
     else:
-        checkpoint_callback = ModelCheckpoint(dirpath=f'{os.getcwd()}/mlruns', save_top_k=1,
-                                              verbose=True, monitor='val_avg_iou', mode='max', filename='best')
+        checkpoint_callback = ModelCheckpoint(dirpath='/data/mlruns', save_top_k=1,
+                                              verbose=True, monitor='val_avg_iou', mode='max', filename=f'best{randint(0, 10000)}')
         lr_monitor = LearningRateMonitor(logging_interval='epoch')
         trainer = pl.Trainer.from_argparse_args(args, callbacks=[checkpoint_callback, lr_monitor],
                                                 default_root_dir=os.getcwd() + "/mlruns",
@@ -93,8 +92,10 @@ if __name__ == "__main__":
     # lrfind = trainer.tuner.lr_find(model,dm)
     # print(lrfind.suggestion())
     trainer.fit(model, dm)
-    trainer.test()
+    trainer.test(ckpt_path=checkpoint_callback.best_model_path,datamodule=dm)
+    #trainer.save_checkpoint("/data/example.ckpt")
     print(f'\n[bold blue]For tensorboard log, call [bold green]tensorboard --logdir={tensorboard_output_path}')
     print(checkpoint_callback.best_model_score.item())
-    with open('best.txt', 'w') as f:
+    with open('/data/best.txt', 'w') as f:
         f.write(str(checkpoint_callback.best_model_score.item()))
+        

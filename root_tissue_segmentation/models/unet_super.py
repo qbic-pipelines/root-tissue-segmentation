@@ -24,17 +24,16 @@ class UNetsuper(pl.LightningModule):
         self.len_test_set = len_test_set
         self.weights = kwargs['class_weights']
         self.alphas = [kwargs[f'alpha_{x}'] for x in range(5)]
-        self.criterion = FocalLoss(alpha=kwargs['alpha_1'], gamma=kwargs['gamma_factor'])
-        """
+        #self.criterion = FocalLoss(alpha=kwargs['alpha_1'], gamma=kwargs['gamma_factor'])
+    
         self.criterion = torch.hub.load(
             'adeelh/pytorch-multi-class-focal-loss',
             model='FocalLoss',
-            alpha=torch.tensor(self.weights),
-            gamma=2,
+            alpha=torch.tensor(self.alphas),
+            gamma=kwargs['gamma_factor'],
             reduction='mean',
             force_reload=False
         )
-        """
 
     @staticmethod
     def add_model_specific_args(parent_parser):
