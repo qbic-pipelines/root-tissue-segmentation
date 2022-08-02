@@ -19,7 +19,7 @@ root-tissue-segmentation
         :target: https://waseju.github.io/root-tissue-segmentation
         :alt: Documentation Status
 
-Reproducible, deep-learning approach to segment microscopy images of root tissue samples from *A. thaliana*. The training dataset consist 2D fluorescence microscopy (FM) images with one brightfield channel, and two fluorescence channels for pH sensitive markers (PHDFM dataset). This project trains Pytorch-based U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict semantic segmentation masks that classify pixels into 5 clases, background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ).
+Reproducible, deep-learning approach to segment microscopy images of root tissue samples from *A. thaliana*. The training dataset consist 2D fluorescence microscopy (FM) images with one brightfield channel, and two fluorescence channels for pH sensitive markers (PHDFM dataset: https://zenodo.org/record/5841376). This project trains Pytorch-based U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict semantic segmentation masks that classify pixels into 5 clases, background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ).
 
 .. image:: docs/images/fm_seg_dataset.png
         :alt: FM dataset
