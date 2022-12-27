@@ -19,15 +19,13 @@ root-tissue-segmentation
         :target: https://waseju.github.io/root-tissue-segmentation
         :alt: Documentation Status
 
-Reproducible, deep-learning approach to segment microscopy images of root tissue samples from *A. thaliana*. The training dataset consist 2D fluorescence microscopy (FM) images with one brightfield channel, and two fluorescence channels for pH sensitive markers (PHDFM dataset: https://zenodo.org/record/5841376). This project trains Pytorch-based U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict semantic segmentation masks that classify pixels into 5 clases, background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ).
+Reproducible, deep-learning approach to segment microscopy images of root tissue samples from *A. thaliana*. The training dataset consist 2D fluorescence microscopy images with brightfield and fluorescence channels from pH sensitive markers (PHDFM dataset: https://zenodo.org/record/5841376). The PHDFM dataset is composed of images of root tissue samples from A. thaliana, using the ratiometric fluorescent indicator 8‐hydroxypyrene‐1,3,6‐trisulfonic acid trisodium salt (HPTS). This semantic segmentation training dataset consists of 2D microscopy images (the brightfield channel for excitation at 405 nm), each containing a segmentation mask as an additional image channel (manually annotated by plant biologists). The segmentation masks classify pixels into 5 labels: background, root, meristematic Zone (MZ), early elongation zone (EEZ), and late elongation zone (LEZ). This deterministic training module employs Pytorch-based U-Net models (`U-Net`_, `U-Net++`_, `U2-Net`_) to predict semantic segmentation masks, based on the PHDFM dataset.
 
 .. image:: docs/images/fm_seg_dataset.png
         :alt: FM dataset
         :scale: 1
 
-The figure above depicts color-coded class labels as follows: Background (white), Root (blue), Meristematic Zone (red), Early Elongation Zone (green), Late Elongation Zone (cyan).
-
-The project includes automated HPO.
+The project includes automated hyperparameter optimization, using the (Optuna framework: https://optuna.org/). Optimal hyperparameters are used as default values in this training module.
 
 Activity Diagram
 ----------------
