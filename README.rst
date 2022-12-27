@@ -41,7 +41,7 @@ A reproducibility analysis was conducted using this training module. Models were
 
 .. image:: docs/images/rep_of_pred.png
         :alt: Reproducibility of results
-        :scale: 0.7
+        :scale: 1
 
 Qualitative and quantitative performance results of the U-Net^2 model, with assessment of deterministic training. (a) Model predictions and ground truth show a high similarity, missing predictions are sometimes obtained when there are multiple labels in the ground truth. (b) Letter-value plot of standard deviation values (STD) of U-Net^2 model parameters (weights and biases) across training runs (10 training runs per setup, n=10), the standard deviation of all 44.04 million trainable parameters was calculated for the Random (without random seed or deterministic settings) and Deterministic training setups (specified all random seeds and forced deterministic algorithms) (https://arxiv.org/abs/2104.07651). (c) Boxplot of IoU performance on the test dataset (mean IoU of all images per class), after the training reproducibility test (n=10), this metric shows a large variance for all classes besides the background while using a non-deterministic setup and zero variance in all classes while using the deterministic setup, demonstrating full deterministic output of the training process. Scale bars = 53.14 µm.
 
