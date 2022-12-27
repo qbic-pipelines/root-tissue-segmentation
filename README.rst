@@ -55,6 +55,7 @@ This package aims to conduct root tissue segmentation for pH measurement analysi
 .. image:: docs/images/bio_background.png
         :alt: Background slide
         :scale: 1
+        :align: center
 
 
 Credits
