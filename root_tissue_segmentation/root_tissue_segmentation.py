@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     # check, whether the run is inside a Docker container or not
     if 'MLF_CORE_DOCKER_RUN' in os.environ:
-        checkpoint_callback = ModelCheckpoint(dirpath='/mlflow/tmp/mlruns', save_top_k=1, verbose=True,
+        checkpoint_callback = ModelCheckpoint(dirpath='/data/mlruns', save_top_k=1, verbose=True,
                                               monitor='val_avg_iou', mode='max', filename='best')
         trainer = pl.Trainer.from_argparse_args(args, checkpoint_callback=checkpoint_callback, default_root_dir='/data',
                                                 logger=TensorBoardLogger('/data'))
@@ -84,7 +84,7 @@ if __name__ == "__main__":
         lr_monitor = LearningRateMonitor(logging_interval='epoch')
         trainer = pl.Trainer.from_argparse_args(args, callbacks=[checkpoint_callback, lr_monitor],
                                                 default_root_dir=os.getcwd() + "/mlruns",
-                                                logger=TensorBoardLogger('data'), auto_lr_find=False)
+                                                logger=TensorBoardLogger('/data'), auto_lr_find=False)
         tensorboard_output_path = f'data/default/version_{trainer.logger.version}'
 
     trainer.deterministic = True
