@@ -19,7 +19,7 @@ def offline_trainer(script) -> str:
 
 
 def main():
-    print(offline_trainer("hpo.py --n-trials 1000 --n-startup-trials 10"))
+    print(offline_trainer("hpo.py --n-trials 300 --n-startup-trials 10"))
 
 
 if __name__ == '__main__':

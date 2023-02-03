@@ -12,19 +12,15 @@ import torch
 import torch.utils.data
 import torch.utils.data as data
 from sklearn.model_selection import train_test_split
-from sklearn.utils.class_weight import compute_class_weight
 from torchvision.datasets.utils import download_and_extract_archive
 
+import tifffile
+import requests
+import tarfile
+import shutil
 
 class PHDFM(data.Dataset):
-    mirrors = [
-        'https://drive.google.com/file/d/',
-    ]
-
-    resources = [
-        ("images.tar.gz", "18Fd4WQ_M6gz9qV-43rPjkRmNw2LT3zxI/view?usp=sharing", "54e12b0ad17e4d89796d64b92801c90a"),
-        ("masks.tar.gz", "12ViQsa9K8EqgJE1DrhFJiKot41WUEj3R/view?usp=sharing", "b7fa40aa75788235f9fa3696b760ea2d"),
-    ]
+    dataset_url = "https://zenodo.org/record/5841376/files/root-seg-dataset.tar.gz"
 
     training_file = 'training.pt'
     validation_file = 'validation.pt'
@@ -136,6 +132,7 @@ class PHDFM(data.Dataset):
 
     def download(self) -> None:
         """Download the PHDFM data if it doesn't exist in processed_folder already."""
+        shutil.copytree("/data/",self.processed_folder, copy_function=shutil.copy, dirs_exist_ok=True)
 
         if self._check_exists():
             return
@@ -144,26 +141,11 @@ class PHDFM(data.Dataset):
         os.makedirs(self.processed_folder, exist_ok=True)
 
         # download files
-        for filename, uniqueID, md5 in self.resources:
-            for mirror in self.mirrors:
-                url = "{}{}".format(mirror, uniqueID)
-                try:
-                    print("Downloading {}".format(url))
-                    download_and_extract_archive(
-                        url, download_root=self.raw_folder,
-                        filename=filename,
-                        md5=md5
-                    )
-                except URLError as error:
-                    print(
-                        "Failed to download (trying next):\n{}".format(error)
-                    )
-                    continue
-                finally:
-                    print()
-                break
-            else:
-                raise RuntimeError("Error downloading {}".format(filename))
+        # naive downloading code, can be improved
+        print("Downloading {}".format(self.dataset_url))
+        url_response = requests.get(self.dataset_url, stream=True)
+        dataset_file = tarfile.open(fileobj=url_response.raw, mode="r|gz")
+        dataset_file.extractall(path=self.raw_folder)
 
         # process and save as torch files
         print('Processing...')
@@ -185,43 +167,54 @@ class PHDFM(data.Dataset):
         Transforms files to .pt tensor files.
         :return: training set, test set, training weights
         """
-        img_ids = glob(os.path.join(self.raw_folder, "images", '*' + ".png"))
-        img_ids = sorted([os.path.splitext(os.path.basename(p))[0] for p in img_ids])
-        train_ids, val_test_ids = train_test_split(img_ids, test_size=0.3, random_state=42)
+        img_ids = glob(os.path.join(self.raw_folder, "PHDFM_dataset", '*' + ".ome.tif"))
+        img_ids = sorted([os.path.splitext(os.path.splitext(os.path.basename(p))[0])[0][6:] for p in img_ids])
+        train_ids, val_test_ids = train_test_split(img_ids, test_size=0.2, random_state=42)
         val_ids, test_ids = train_test_split(val_test_ids, test_size=0.5, random_state=42)
 
         ids = {"training": train_ids,
                "test": test_ids,
                "validation": val_ids}
-
+        print(ids)
         classes = ['background', 'root', 'early elongation zone', 'late elongation zone', 'meristematic zone']
         tensors = {}
         weight_df = pd.DataFrame(columns=["class_ids", "classes", "weights", "set_name"])
+        wt_all = [0,0,0,0,0]
         for set_name, set_ids in ids.items():
             training = [[], [], []]
             for img_id in set_ids:
-                img = cv2.imread(os.path.join(self.raw_folder, "images", img_id + ".png"), cv2.IMREAD_GRAYSCALE)[
-                    ..., None]
-                mask = []
-                for idx, cls in enumerate(classes):
-                    label = cv2.imread(os.path.join(self.raw_folder, "masks", cls,
-                                                    img_id + ".png"), cv2.IMREAD_GRAYSCALE)[..., None]
-                    label[label > 0] = 1
-                    mask.append(label)
-                    if idx > 1:
-                        mask[1][label > 0] = 0
-                mask_one_hot = np.dstack(mask).astype(int)
-                mask = np.expand_dims(np.argmax(mask_one_hot, axis=2), 2)
+
+                input_image = tifffile.imread(os.path.join(self.raw_folder, "PHDFM_dataset", "image_" + img_id + ".ome.tif"))
+                # transpose from ome-tif format
+                input_image = np.transpose(input_image, (1, 2, 0))
+
+                img = np.expand_dims(input_image[:, :, 0], axis=2)
+                mask = np.expand_dims(input_image[:, :, 1], axis=2)
+
                 training[0].append(torch.FloatTensor(img))
                 training[1].append(torch.IntTensor(mask))
                 training[2].append(int(img_id))
+                unq = np.unique(mask.astype(int))
+                for i in unq:
+                    wt_all[i] += 1
+
             imgs = torch.stack(training[0], dim=0)
             masks = torch.stack(training[1], dim=0)
+            wt = []
+            for i in range(5):
+                post = len(masks[masks == i])
+                neg = len(masks[masks != i]) + post
+                wt.append(post / neg)
+              #  wt_all[i] += post
+            weights = 1 / np.array(wt)
+            print(weights / np.max(weights))
             unique = np.unique(masks)
-            class_weights = compute_class_weight('balanced', unique, masks.numpy().flatten())
+            class_weights = weights / np.max(
+                weights)  # compute_class_weight('balanced', unique, masks.numpy().flatten())
             weights = pd.DataFrame({"class_ids": unique, "classes": classes, "weights": class_weights})
             weights['set_name'] = set_name
             weight_df = weight_df.append(weights, ignore_index=True)
             tensor = torch.cat([imgs, masks], dim=3)
             tensors[set_name] = tensor
+        print(wt_all)
         return tensors["training"], tensors["validation"], tensors["test"], weight_df

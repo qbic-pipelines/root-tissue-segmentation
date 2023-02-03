@@ -46,12 +46,13 @@ class MLFCore:
         conda_env_filehandler = open(f'{reports_output_dir}/root_tissue_segmentation_conda_environment.yml', 'w')
         subprocess.call(['conda', 'env', 'export', '--name', 'root_tissue_segmentation'], stdout=conda_env_filehandler)
         print('[bold blue]Uploading conda environment report as a run artifact...')
-        mlflow.log_artifact(f'{reports_output_dir}/root_tissue_segmentation_conda_environment.yml', artifact_path='reports')
+        mlflow.log_artifact(f'{reports_output_dir}/root_tissue_segmentation_conda_environment.yml',
+                            artifact_path='reports')
 
     @staticmethod
     def set_pytorch_random_seeds(seed, num_gpus):
         torch.manual_seed(seed)
-        torch.set_deterministic(True)
+        torch.use_deterministic_algorithms(True)
         if num_gpus > 0:
             torch.cuda.manual_seed(seed)
             torch.cuda.manual_seed_all(seed)  # For multiGPU

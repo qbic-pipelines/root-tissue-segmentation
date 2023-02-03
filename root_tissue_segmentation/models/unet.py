@@ -68,7 +68,7 @@ class UNET(UNetsuper):
 
         final = self.final(up1)
 
-        return final
+        return torch.sigmoid(final)
 
 
 class NESTEDUNET(UNetsuper):

@@ -1,8 +1,5 @@
 ---
-name: General question
-about: Ask a question about anything related to this project
-title: 'Question'
-labels: 'question'
+name: General question about: Ask a question about anything related to this project title: 'Question' labels: 'question'
 assignees: ''
 
 ---

@@ -7,7 +7,10 @@ import mlflow
 import numpy as np
 import optuna
 import pandas as pd
+import sys
 import yaml
+from contextlib import redirect_stdout
+import io
 from optuna.integration import MLflowCallback
 from optuna.samplers import TPESampler
 from optuna.visualization import plot_edf, plot_contour, plot_intermediate_values, plot_optimization_history, \
@@ -53,14 +56,18 @@ def suggest_hyperparameters(trial: optuna.Trial):
     :param trial: Optuna Trial object.
     :return: Dictionary containing the suggested hyperparameters.
     """
-    lr = trial.suggest_float("lr", 1e-7, 1, log=True)
-    weight_decay = trial.suggest_float("weight-decay", 1e-9, 1e-1, log=True)
-    epsilon = trial.suggest_float("epsilon", 1e-16, 1e-8, log=True)
-    gamma = trial.suggest_uniform('gamma-factor', low=1, high=3)
-    max_epochs = 90  # trial.suggest_int('max_epochs', low=50, high=100)
+    lr = trial.suggest_float("lr", 1e-5, 1e-1, log=True)
+    weight_decay = trial.suggest_float("weight-decay", 1e-4, 5e-1, log=True)
+    epsilon = trial.suggest_float("epsilon", 1e-16, 1e-8, log=True)  # 3.170393250650158e-12 
+    gamma = trial.suggest_uniform("gamma-factor", 1.4, 3)
+
+    max_epochs = trial.suggest_int('max_epochs', low=50, high=100)
+    hps = {'lr': lr, 'weight-decay': weight_decay, 'gamma-factor': gamma,
+           'epsilon': epsilon, 'max_epochs': max_epochs}
+    for i in range(5):
+        hps[f'alpha-{i}'] = trial.suggest_float(f"alpha-{i}", 1e-2, 1)
     print(f"Suggested hyperparameters: \n{pformat(trial.params)}")
-    return {'lr': lr, 'weight-decay': weight_decay, 'gamma-factor': gamma,
-            'epsilon': epsilon, 'max_epochs': max_epochs}
+    return hps
 
 
 def objective(
@@ -68,23 +75,32 @@ def objective(
 ) -> float:
     hparams = suggest_hyperparameters(trial)
     mlflow_path = "mlruns"
-    remove_previous_model(mlflow_path)
+    #remove_previous_model(mlflow_path)
+    
     val_iou = run_mlflow_project(hparams, "HPO Optimization")
+    os.system("rm -r /tmp/tmp*")
+    os.system("docker system prune -a -f")
     return val_iou
 
 
-def run_mlflow_project(hparams, experiment_name):
+def run_mlflow_project(
+    #hparams, 
+    experiment_name):
     try:
-        mlflow.projects.run('.', parameters=hparams, experiment_name=experiment_name)
-        with open('best.txt') as file:
+        mlflow.projects.run('.', 
+        #parameters=hparams, 
+        experiment_name=experiment_name,docker_args={"gpus":"all"})
+        with open('data/best.txt') as file:
             val_iou = float(file.readline())
     except RuntimeError:
         val_iou = 0
     return val_iou
 
 
-def test_reproducibility(hparams: dict, n_trials_reproducibility: int = 10,
-                         csv_path: str = os.path.join("deterministic", "ious.csv"), mlflow_path: str = "mlruns"):
+def test_reproducibility(#hparams: dict, 
+                        n_trials_reproducibility: int = 10,
+                        csv_path: str = os.path.join("deterministic", "ious.csv"), mlflow_path: str = "mlruns"
+                          ):
     """
 
     :param hparams: Hyperparameters to test the reproducibility of the experiment.
@@ -94,8 +110,9 @@ def test_reproducibility(hparams: dict, n_trials_reproducibility: int = 10,
     val_ious = []
     os.makedirs(csv_path, exist_ok=True)
     for i in range(n_trials_reproducibility):
-        remove_previous_model(mlflow_path)
-        val_ious.append(run_mlflow_project(hparams, "reproducibility"))
+        val_ious.append(run_mlflow_project(
+            #hparams, 
+            "reproducibility"))
     val_ious = np.array(val_ious)
     pd.DataFrame(val_ious, columns=['Run']).to_csv(os.path.join(csv_path, "determinism_test_ious.csv"))
     if np.var(val_ious, axis=0) == 0.0:
@@ -107,6 +124,7 @@ def test_reproducibility(hparams: dict, n_trials_reproducibility: int = 10,
 def remove_previous_model(mlflow_path):
     try:
         os.remove(mlflow_path + "/best.ckpt")
+        os.remove(mlflow_path + "/lr_find_temp_model.ckpt")
     except OSError as e:
         print("Error: %s : %s" % (mlflow_path, e.strerror))
 
@@ -115,14 +133,14 @@ def optimize_hyperparameters(seed=0, n_startup_trials=10, n_trials=100, sampler_
                              pruner_name: str = None, log_dir: str = os.path.join(os.getcwd(), 'optuna'),
                              joblib_filename: str = 'optuna.pkl', plot_dir="plots"):
     mlflow_cb = MLflowCallback(
-        tracking_uri='mlruns',
+        #tracking_uri='file:///mlflow/tmp/mlruns',
         metric_name='val_avg_iou'
     )
 
     sampler = get_sampler(n_startup_trials, sampler_name, seed)
     pruner = get_pruner(pruner_name)
-    study = optuna.create_study(sampler=sampler, pruner=pruner, study_name="HPO Optimization", direction='maximize', )
-    study.optimize(objective, n_trials=n_trials, callbacks=[mlflow_cb], timeout=48 * 60 * 60)
+    study = optuna.create_study(sampler=sampler, pruner=pruner, study_name="HPO Optimization", direction='maximize')
+    study.optimize(objective, n_trials=n_trials, callbacks=[mlflow_cb])
     os.makedirs(log_dir, exist_ok=True)
     optuna_filepath = os.path.join(log_dir, joblib_filename)
     joblib.dump(value=study, filename=optuna_filepath)
@@ -159,7 +177,7 @@ if __name__ == "__main__":
     parser.add_argument(
         '--n-trials',
         type=int,
-        default=1000,
+        default=300,
         help='Number of trials to optimize',
     )
     parser.add_argument(
@@ -189,11 +207,11 @@ if __name__ == "__main__":
         choices=[None, 'Hyperband']
     )
     args = parser.parse_args()
-    optuna_hparams = vars(args)
-    optuna_log_dir = os.path.join(os.getcwd(), 'optuna')
-    final_hps = optimize_hyperparameters(optuna_hparams['seed'], optuna_hparams['n_startup_trials'],
-                                         optuna_hparams['n_trials'],
-                                         optuna_hparams['sampler'], optuna_hparams['pruner'], log_dir=optuna_log_dir)
-    with open(f'{optuna_log_dir}/best_hparams.yml', 'w') as outfile:
-        yaml.dump(final_hps, outfile)
-    test_reproducibility(final_hps, csv_path=os.path.join(optuna_log_dir))
+    #optuna_hparams = vars(args)
+    #optuna_log_dir = os.path.join(os.getcwd(), 'optuna')
+    #final_hps = optimize_hyperparameters(optuna_hparams['seed'], optuna_hparams['n_startup_trials'],
+    #                                     optuna_hparams['n_trials'],
+    #                                     optuna_hparams['sampler'], optuna_hparams['pruner'], log_dir=optuna_log_dir)
+    #with open(f'{optuna_log_dir}/best_hparams.yml', 'w') as outfile:
+    #    yaml.dump(final_hps, outfile)
+    test_reproducibility()#(final_hps, csv_path=os.path.join(optuna_log_dir))
