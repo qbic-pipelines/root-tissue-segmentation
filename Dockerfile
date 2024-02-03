@@ -1,6 +1,11 @@
 FROM mlfcore/base:1.2.0
 
 # Install the conda environment
+
+RUN sudo apt-key del 7fa2af80
+RUN sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
+RUN sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/7fa2af80.pub
+
 RUN sudo apt-get update
 RUN sudo DEBIAN_FRONTEND="noninteractive"  apt-get -y install tzdata
 RUN sudo apt-get install -y --reinstall openmpi-bin libopenmpi-dev
