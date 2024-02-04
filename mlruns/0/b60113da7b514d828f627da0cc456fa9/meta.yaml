@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ubuntu/nf_root/root-tissue-segmentation-core/mlruns/0/b60113da7b514d828f627da0cc456fa9/artifacts
+end_time: 1707043243670
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: b60113da7b514d828f627da0cc456fa9
+run_uuid: b60113da7b514d828f627da0cc456fa9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707043190722
+status: 4
+tags: []
+user_id: ubuntu

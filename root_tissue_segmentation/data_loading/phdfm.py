@@ -213,7 +213,7 @@ class PHDFM(data.Dataset):
                 weights)  # compute_class_weight('balanced', unique, masks.numpy().flatten())
             weights = pd.DataFrame({"class_ids": unique, "classes": classes, "weights": class_weights})
             weights['set_name'] = set_name
-            weight_df = weight_df.append(weights, ignore_index=True)
+            weight_df = pd.concat([weight_df, weights], ignore_index=True) # weight_df = weight_df.append(weights, ignore_index=True)
             tensor = torch.cat([imgs, masks], dim=3)
             tensors[set_name] = tensor
         print(wt_all)

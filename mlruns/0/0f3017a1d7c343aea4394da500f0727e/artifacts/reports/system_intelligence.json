@@ -1,0 +1,124 @@
+{
+  "cpu": {
+    "vendor_id_raw": "GenuineIntel",
+    "hardware_raw": null,
+    "brand_raw": "Intel Core Processor (Broadwell, no TSX, IBRS)",
+    "arch": "X86_64",
+    "logical_cores": "24",
+    "physical_cores": "24",
+    "clock": "2294.5800000000013 MHz",
+    "clock_min": "0.0 MHz",
+    "clock_max": "0.0 MHz",
+    "cache": "L1: 768 KiB\nL2: 96 MiB\nL3: 16 MiB"
+  },
+  "gpus": [],
+  "ram": {
+    "total": 135065022464,
+    "banks": {},
+    "cache": {}
+  },
+  "host": {
+    "hostname": "d79fcc197d35"
+  },
+  "os": "Linux-5.15.0-84-generic-x86_64-with-glibc2.31",
+  "hdd": {
+    "model": {
+      "/dev/vda": {
+        "size": 104857600,
+        "model": ""
+      },
+      "/dev/vdb": {
+        "size": 314572800,
+        "model": ""
+      }
+    },
+    "usage": {
+      "/dev/vda1": {
+        "total": "51.84 GB",
+        "used": "32.66 GB",
+        "free": "19.16 GB",
+        "percentage": "63.0",
+        "fstype": "ext4",
+        "mountpoint": "/home/ubuntu/nf_root/root-tissue-segmentation-core/mlruns/0/0f3017a1d7c343aea4394da500f0727e/artifacts"
+      }
+    }
+  },
+  "swap": 0,
+  "network": {
+    "lo": {
+      "isup": "True",
+      "duplex": "NicDuplex.NIC_DUPLEX_UNKNOWN",
+      "speed": "0",
+      "mtu": "65536"
+    },
+    "eth0": {
+      "isup": "True",
+      "duplex": "NicDuplex.NIC_DUPLEX_FULL",
+      "speed": "10000",
+      "mtu": "1440"
+    }
+  },
+  "software": {
+    "gcc": {
+      "path": "/usr/bin/gcc",
+      "version": "gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0"
+    },
+    "g++": {
+      "path": "/usr/bin/g++",
+      "version": "g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0"
+    },
+    "gfortran": {
+      "path": "/usr/bin/gfortran",
+      "version": "GNU Fortran (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0"
+    },
+    "mpicc": {
+      "path": "/usr/bin/mpicc",
+      "version": "gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0"
+    },
+    "mpic++": {
+      "path": "/usr/bin/mpic++",
+      "version": "g++ (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0"
+    },
+    "mpifort": {
+      "path": "/usr/bin/mpifort",
+      "version": "GNU Fortran (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0"
+    },
+    "python": {
+      "path": "/home/user/miniconda/envs/root_tissue_segmentation/bin/python",
+      "version": "Python 3.9.2",
+      "packages": {
+        "mpi4py": {
+          "version": "3.0.3"
+        },
+        "numpy": {
+          "version": "1.22.4"
+        },
+        "pycuda": {
+          "version": "2020.1"
+        },
+        "scikit-learn": {
+          "version": "0.24.2"
+        },
+        "scipy": {
+          "version": "1.6.3"
+        }
+      }
+    },
+    "pip": {
+      "path": "/home/user/miniconda/envs/root_tissue_segmentation/bin/pip",
+      "version": "pip 21.0.1 from /home/user/miniconda/envs/root_tissue_segmentation/lib/python3.9/site-packages/pip (python 3.9)"
+    },
+    "mpirun": {
+      "path": "/usr/bin/mpirun",
+      "version": "mpirun (Open MPI) 4.0.3"
+    },
+    "nvcc": {
+      "path": "/usr/local/cuda/bin/nvcc",
+      "version": "Cuda compilation tools, release 11.2, V11.2.152"
+    },
+    "mkl": {
+      "path": null,
+      "version": "Intel(R) oneAPI Math Kernel Library Version 2021.4-Product Build 20210904 for Intel(R) 64 architecture applications"
+    }
+  }
+}
