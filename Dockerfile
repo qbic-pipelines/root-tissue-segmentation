@@ -21,7 +21,6 @@ ENV PATH /home/user/miniconda/envs/root_tissue_segmentation/bin:$PATH
 
 # Dump the details of the installed packages to a file for posterity
 RUN conda env export --name root-tissue-segmentation > root-tissue-segmentation_environment.yml
-RUN cat root-tissue-segmentation_environment.yml
 
 # Currently required, since mlflow writes every file as root!
 USER root
