@@ -5,7 +5,7 @@ channels:
   - pytorch
   - nvidia
 dependencies:
-  - nvidia::cudatoolkit=11.1.74
+  - nvidia::cudatoolkit=11.7.0
   - defaults::python=3.9.2
   - defaults::boto3=1.17.20
   - conda-forge::tensorboardx=2.1
@@ -14,9 +14,9 @@ dependencies:
   - pytorch::pytorch=1.8.1
   - pytorch::torchvision=0.9.1
   - pytorch-lightning=1.5.10
-  - pip=21.0.1
+  - pip=23.3.1
   - pip:
-    - pycuda==2020.1  # not on Conda
+    - pycuda==2024.1  # not on Conda
     - cloudpickle==1.6.0
     - system-intelligence==2.0.2
     - adabelief-pytorch==0.2.1
