@@ -1,6 +1,4 @@
 FROM nvidia/cuda:11.6.1-cudnn8-devel-ubuntu20.04
-LABEL authors="Lukas Heumos (lukas.heumos@posteo.net)" \
-      description="Docker image containing all requirements for running machine learning on CUDA enabled GPUs"
 
 # Install some basic utilities
 RUN apt-get update && apt-get install -y \
