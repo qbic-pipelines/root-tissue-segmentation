@@ -1,4 +1,7 @@
-FROM nvidia/cuda:11.6.1-cudnn8-devel-ubuntu20.04
+FROM nvidia/cuda:11.1.1-base-ubuntu20.04
+
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=all
 
 # Install some basic utilities
 RUN apt-get update && apt-get install -y \
