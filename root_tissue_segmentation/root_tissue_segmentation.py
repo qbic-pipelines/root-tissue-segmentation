@@ -91,6 +91,9 @@ if __name__ == "__main__":
     trainer.benchmark = False
     # lrfind = trainer.tuner.lr_find(model,dm)
     # print(lrfind.suggestion())
+
+    MLFCore.set_deterministic_mode(pytorch_seed, num_of_gpus)
+    
     trainer.fit(model, dm)
     trainer.test(ckpt_path=checkpoint_callback.best_model_path,datamodule=dm)
     #trainer.save_checkpoint("/data/example.ckpt")
