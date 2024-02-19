@@ -4,22 +4,44 @@ Usage
 Setup
 -------
 
-mlf-core based mlflow projects require either Conda or Docker to be installed.
-The usage of Docker is highly preferred, since it ensures that system-intelligence can fetch all required and accessible hardware.
-This cannot be guaranteed for MacOS let alone Windows environments.
+Projects based on mlf-core require either Conda or Docker to be installed, we recommend to install both. The usage of Docker is highly preferred to run the codebase, since it ensures that system-intelligence can fetch all required and accessible hardware. This cannot be guaranteed for MacOS let alone Windows environments.
 
 Conda
 +++++++
 
-There is no further setup required besides having Conda installed and CUDA configured for GPU support.
-mlflow will create a new environment for every run.
+It is required to have a Conda installed and CUDA configured for GPU support, mlflow will create a new environment for every run. Conda can be installed as instructed by the `Anaconda documentation <https://docs.anaconda.com/free/miniconda/>`_.
+
+CUDA Toolkit
+++++++++++++++
+
+CUDA can be installed as instructed by the `CUDA documentation <https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions>`_. Please note the `Post install steps <https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#post-installation-actions>`_.
+
 
 Docker
 ++++++++
 
-If you use Docker you should not need to build the Docker container manually, since it should be available on Github Packages or another registry.
-However, if you want to build it manually for e.g. development purposes, ensure that the names matches the defined name in the ``MLproject``file.
-This is sufficient to train on the CPU. If you want to train using the GPU you need to have the `NVIDIA Container Toolkit <https://github.com/NVIDIA/nvidia-docker>`_ installed.
+If you use Docker you should not need to build the Docker container manually, since it should be available on Github Packages or another registry. However, if you want to build it manually for e.g. development purposes, ensure that the names matches the defined name in the ``MLproject`` file. Docker can be installed as instructed by the `Docker documentation <https://docs.docker.com/engine/install/>`_.
+
+This is sufficient to train on the CPU. If you want to train using the GPU you need to have the `NVIDIA Container Toolkit <https://github.com/NVIDIA/nvidia-container-toolkit>`_ installed.
+
+
+Test Environment
+++++++++++++++++++
+
+This codebase has been tested in a virtual machine running **Ubuntu 22.04 LTS**.
+
+We installed Conda using the method suggested for Linux in the `Anaconda documentation <https://docs.anaconda.com/free/miniconda/#quick-command-line-install>`_.
+
+We installed **CUDA Toolkit 12.3 Update 2** for Ubuntu 22.04 using the instructions for the `network installation <https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_network>`_.
+
+We installed Docker following the documentation for `Ubuntu <https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository>`_. Please note the `Post install steps <https://docs.docker.com/engine/install/linux-postinstall/>`_. We installed Docker **Version 25.0.3, build 4debf41**.
+
+We followed the documentation to install the NVIDIA Container Toolkit using `Apt <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installing-with-apt>`_.
+
+We installed `Mlflow <https://mlflow.org/>`_ version **2.10.2** using the following conda command:
+
+``conda install conda-forge::mlflow=2.10.2``
+
 
 Training
 -----------
