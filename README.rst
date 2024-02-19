@@ -27,9 +27,7 @@ Deterministic deep-learning approach to segment microscopy images of root tissue
 
 The project includes automated hyperparameter optimization, using the Optuna framework (https://optuna.org/). Optimal hyperparameters are used as default values in this training module.
 
- 
-.. include:: ../docs/usage.rst
-
+Stable usage documentation can be found in here: `Usage`_.
 
 Activity Diagram
 ----------------
@@ -69,5 +67,6 @@ This package was created with `mlf-core`_ using cookiecutter_.
 .. _U-Net: https://lmb.informatik.uni-freiburg.de/Publications/2015/RFB15a/
 .. _U-Net++: https://arxiv.org/abs/1807.10165
 .. _U2-Net: https://arxiv.org/abs/2005.09007
+.. _Usage: https://github.com/qbic-pipelines/root-tissue-segmentation-core/blob/master/docs/usage.rst
 .. _mlf-core: https://mlf-core.readthedocs.io/en/latest/
 .. _cookiecutter: https://github.com/audreyr/cookiecutter
