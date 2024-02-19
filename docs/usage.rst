@@ -49,10 +49,10 @@ Training using GPUs
 
 Regularly used commands for development and testing:
 
-``mlflow run . --build-image -A runtime=nvidia``
-``mlflow run . --build-image -A runtime=nvidia -P max_epochs=3``
-``mlflow run . --build-image -A runtime=nvidia -P max_epochs=3 -P gpus=1``
-``mlflow run . --build-image -A runtime=nvidia -P max_epochs=3 -P gpus=2``
+- ``mlflow run . --build-image -A runtime=nvidia``
+- ``mlflow run . --build-image -A runtime=nvidia -P max_epochs=3``
+- ``mlflow run . --build-image -A runtime=nvidia -P max_epochs=3 -P gpus=1``
+- ``mlflow run . --build-image -A runtime=nvidia -P max_epochs=3 -P gpus=2``
 
 Conda environments will automatically use the GPU if available. Docker requires the accessible GPUs to be passed as runtime parameters. To train using all gpus run ``mlflow run . --build-image -A runtime=nvidia -P gpus=<<num_of_gpus>> -P acc=ddp``. 
 
