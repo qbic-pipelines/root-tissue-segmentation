@@ -27,10 +27,9 @@ Deterministic deep-learning approach to segment microscopy images of root tissue
 
 The project includes automated hyperparameter optimization, using the Optuna framework (https://optuna.org/). Optimal hyperparameters are used as default values in this training module.
 
-
-.. include:: 
+ 
 .. literalinclude:: docs/usage.rst
-   :language: rst
+        :language: rst
 
 
 Activity Diagram
