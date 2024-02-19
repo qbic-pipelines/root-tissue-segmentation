@@ -28,20 +28,11 @@ This is sufficient to train on the CPU. If you want to train using the GPU you n
 Test Environment
 ++++++++++++++++++
 
-This codebase has been tested in a virtual machine running **Ubuntu 22.04 LTS**.
-
-We installed Conda using the method suggested for Linux in the `Anaconda documentation <https://docs.anaconda.com/free/miniconda/#quick-command-line-install>`_.
-
-We installed **CUDA Toolkit 12.3 Update 2** for Ubuntu 22.04 using the instructions for the `network installation <https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_network>`_.
-
-We installed Docker following the documentation for `Ubuntu <https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository>`_. Please note the `Post install steps <https://docs.docker.com/engine/install/linux-postinstall/>`_. We installed Docker **Version 25.0.3, build 4debf41**.
-
-We followed the documentation to install the NVIDIA Container Toolkit using `Apt <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installing-with-apt>`_.
+This codebase has been tested in a virtual machine running **Ubuntu 22.04 LTS**. We installed Conda using the method suggested for Linux in the `Anaconda documentation <https://docs.anaconda.com/free/miniconda/#quick-command-line-install>`_. We installed **CUDA Toolkit 12.3 Update 2** for Ubuntu 22.04 using the instructions for the `network installation <https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_network>`_. We installed Docker following the documentation for `Ubuntu <https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository>`_. Please note the `Post install steps <https://docs.docker.com/engine/install/linux-postinstall/>`_. We installed Docker **Version 25.0.3, build 4debf41**. We followed the documentation to install the **NVIDIA Container Toolkit version 1.14.5** using `Apt <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installing-with-apt>`_.
 
 We installed `Mlflow <https://mlflow.org/>`_ version **2.10.2** using the following conda command:
 
 ``conda install conda-forge::mlflow=2.10.2``
-
 
 Training
 -----------
