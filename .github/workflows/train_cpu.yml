@@ -34,4 +34,4 @@ jobs:
                 run: pip install mlflow==2.10.2
 
             -   name: Train on the CPU
-                run: mlflow run . --build-image -A runtime=nvidia -P max_epochs=2 -P gpus=0
+                run: mlflow run . --build-image -P max_epochs=2 -P gpus=0
