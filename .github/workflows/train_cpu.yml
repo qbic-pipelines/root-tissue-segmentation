@@ -4,10 +4,10 @@ on: [ push, pull_request ]
 
 jobs:
     run:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-22.04
         strategy:
             matrix:
-                python: [ 3.7, 3.8 ]
+                python: [ 3.8 ]
 
         steps:
             -   name: Reclaim space
@@ -21,7 +21,7 @@ jobs:
                 uses: docker/build-push-action@v1
                 with:
                     dockerfile: Dockerfile
-                    repository: ghcr.io/waseju/root_tissue_segmentation
+                    repository: ghcr.io/qbic-pipelines/root_tissue_segmentation
                     tags: 1.0.0 # <<MLF-CORE_FORCE_BUMP>>
                     push: false
 
@@ -31,7 +31,7 @@ jobs:
                     python-version: ${{ matrix.python }}
 
             -   name: Install mlflow
-                run: pip install mlflow
+                run: pip install mlflow==2.10.2
 
             -   name: Train on the CPU
-                run: mlflow run . -P max_epochs=2
+                run: mlflow run . --build-image -P max_epochs=2 -P gpus=0

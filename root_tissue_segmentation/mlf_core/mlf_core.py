@@ -20,6 +20,21 @@ class MLFCore:
         return cls._instance
 
     @staticmethod
+    def set_deterministic_mode(general_seed, pytorch_seed, num_gpus):
+        os.environ['PYTHONHASHSEED'] = str(general_seed)  # Python general
+        np.random.seed(general_seed)  # Numpy random
+        random.seed(general_seed)  # Python random
+
+        torch.manual_seed(pytorch_seed)
+        torch.use_deterministic_algorithms(True)
+
+        if num_gpus > 0:
+            torch.cuda.manual_seed(pytorch_seed)
+            torch.cuda.manual_seed_all(pytorch_seed)  # For multiGPU
+            torch.backends.cudnn.deterministic = True
+            torch.backends.cudnn.benchmark = False # Disable
+
+    @staticmethod
     def set_general_random_seeds(seed):
         os.environ['PYTHONHASHSEED'] = str(seed)  # Python general
         np.random.seed(seed)  # Numpy random

@@ -1,6 +1,6 @@
 import pytorch_lightning as pl
 from albumentations import Compose
-from albumentations.augmentations import transforms
+from albumentations.augmentations.geometric import transforms
 from torch.utils.data import DataLoader
 
 from data_loading.phdfm import PHDFM

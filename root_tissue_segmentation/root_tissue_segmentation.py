@@ -37,14 +37,18 @@ if __name__ == "__main__":
     mlflow.pytorch.autolog(log_models=False)
     # log conda env and system information
     MLFCore.log_sys_intel_conda_env()
+    
     # parse cli arguments
     args = parser.parse_args()
     dict_args = vars(args)
+    
     # store seed
     # number of gpus to make linter bit less restrict in terms of naming
     general_seed = dict_args['general_seed']
     pytorch_seed = dict_args['pytorch_seed']
     num_of_gpus = dict_args['gpus']
+
+    # setting deterministic mode, set random seeds
     MLFCore.set_general_random_seeds(general_seed)
     MLFCore.set_pytorch_random_seeds(pytorch_seed, num_of_gpus)
 
@@ -87,10 +91,17 @@ if __name__ == "__main__":
                                                 logger=TensorBoardLogger('/data'), auto_lr_find=False)
         tensorboard_output_path = f'data/default/version_{trainer.logger.version}'
 
+    # setting deterministic mode, cuda and pytorch settings
     trainer.deterministic = True
     trainer.benchmark = False
+    
+    # setting deterministic mode, using additional mlf-core function to set mode 
+    MLFCore.set_deterministic_mode(general_seed, pytorch_seed, num_of_gpus)
+
+    # find lr
     # lrfind = trainer.tuner.lr_find(model,dm)
     # print(lrfind.suggestion())
+    
     trainer.fit(model, dm)
     trainer.test(ckpt_path=checkpoint_callback.best_model_path,datamodule=dm)
     #trainer.save_checkpoint("/data/example.ckpt")
